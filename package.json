@@ -14,6 +14,8 @@
     "dev:realtime": "pnpm --filter @together/realtime dev",
     "dev:ai": "pnpm --filter @together/ai dev",
     "dev:media": "pnpm --filter @together/media dev",
+    "dev:safety": "pnpm --filter @together/safety dev",
+    "dev:finance": "pnpm --filter @together/finance dev",
     "dev:web": "pnpm --filter @together/web dev",
     "dev:admin": "pnpm --filter @together/admin dev",
     "dev:mobile": "pnpm --filter @together/mobile start",

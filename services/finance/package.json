@@ -1,0 +1,23 @@
+{
+  "name": "@together/finance",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "tsx src/server.ts",
+    "build": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src tests",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:unit": "vitest run tests/ledger.test.ts tests/store.test.ts",
+    "test:integration": "vitest run tests/app.test.ts"
+  },
+  "dependencies": {
+    "fastify": "5.12.5",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "tsx": "4.23.15"
+  }
+}
