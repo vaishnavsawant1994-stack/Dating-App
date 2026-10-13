@@ -1,0 +1,25 @@
+export const color = {
+  cream: '#fff8f4',
+  blush: '#fff0f1',
+  lavender: '#f4efff',
+  rose50: '#fff5f7',
+  rose100: '#fde8ee',
+  rose300: '#efabc0',
+  rose500: '#d95f7c',
+  rose600: '#c94d6c',
+  rose700: '#a93a58',
+  ink: '#241a1e',
+  muted: '#74666d',
+  border: '#e8cbd3',
+  white: '#ffffff',
+  success: '#246c4f',
+  warning: '#9a6114',
+  danger: '#a63c50',
+  darkCanvas: '#171216',
+  darkSurface: '#221a20',
+  darkBorder: '#5f4350',
+  darkText: '#fff8fb',
+  darkMuted: '#cdbbc3',
+} as const;
+
+export type ColorToken = keyof typeof color;

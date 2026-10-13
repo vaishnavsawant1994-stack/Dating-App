@@ -1,0 +1,67 @@
+name: Web
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  web-shell:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_PUBLIC_API_BASE_URL: http://127.0.0.1:3999
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Activate pinned pnpm
+        run: corepack prepare pnpm@12.11.2 --activate
+
+      - name: Resolve PR dependencies under active policies
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          pnpm clean --lockfile
+          pnpm install --no-frozen-lockfile
+
+      - name: Install committed dependencies
+        if: github.event_name != 'pull_request'
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint design system and web
+        run: |
+          pnpm --filter @together/design-system lint
+          pnpm --filter @together/web lint
+
+      - name: Typecheck design system and web
+        run: |
+          pnpm --filter @together/design-system typecheck
+          pnpm --filter @together/web typecheck
+
+      - name: Unit and contrast tests
+        run: |
+          pnpm --filter @together/design-system test:unit
+          pnpm --filter @together/web test:unit
+
+      - name: Build web
+        run: pnpm --filter @together/web build
+
+      - name: Install Chromium
+        run: pnpm --filter @together/web exec playwright install --with-deps chromium
+
+      - name: Responsive and accessibility checks
+        run: pnpm --filter @together/web test:e2e
