@@ -31,14 +31,13 @@ jobs:
       - name: Activate pinned pnpm
         run: corepack prepare pnpm@12.11.2 --activate
 
-      - name: Install dependencies
-        shell: bash
-        run: |
-          if [[ -f pnpm-lock.yaml ]]; then
-            pnpm install --frozen-lockfile
-          else
-            pnpm install --no-frozen-lockfile
-          fi
+      - name: Refresh PR dependency lock
+        if: github.event_name == 'pull_request'
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Install committed dependencies
+        if: github.event_name != 'pull_request'
+        run: pnpm install --frozen-lockfile
 
       - name: Persist generated lockfile
         if: github.event_name == 'pull_request'
@@ -48,15 +47,21 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add pnpm-lock.yaml
-            git commit -m "build: add generated pnpm lockfile"
+            git commit -m "build: update generated pnpm lockfile"
             git push origin "HEAD:${GITHUB_HEAD_REF}"
           fi
+
+      - name: Verify frozen dependency graph
+        run: pnpm install --frozen-lockfile
 
       - name: Lint
         run: pnpm lint
 
       - name: Typecheck
         run: pnpm typecheck
+
+      - name: Unit tests
+        run: pnpm test:unit
 
       - name: Upload lockfile evidence
         if: always()
