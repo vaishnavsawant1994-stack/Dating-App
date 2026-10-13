@@ -1,0 +1,67 @@
+name: Mobile
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  mobile-shell:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      CI: '1'
+      EXPO_NO_TELEMETRY: '1'
+      EXPO_PUBLIC_APP_ENV: test
+      EXPO_PUBLIC_API_BASE_URL: http://127.0.0.1:3999
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Activate pinned pnpm
+        run: corepack prepare pnpm@12.11.2 --activate
+
+      - name: Resolve PR dependencies under active policies
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          pnpm clean --lockfile
+          pnpm install --no-frozen-lockfile
+
+      - name: Install committed dependencies
+        if: github.event_name != 'pull_request'
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate Expo dependency alignment
+        run: pnpm --filter @together/mobile exec expo install --check
+
+      - name: Lint Mobile
+        run: pnpm --filter @together/mobile lint
+
+      - name: Typecheck Mobile
+        run: pnpm --filter @together/mobile typecheck
+
+      - name: Mobile unit tests
+        run: pnpm --filter @together/mobile test:unit
+
+      - name: Validate public Expo config
+        run: pnpm --filter @together/mobile config:public
+
+      - name: Bundle Android
+        run: pnpm --filter @together/mobile export:android
+
+      - name: Bundle iOS
+        run: pnpm --filter @together/mobile export:ios

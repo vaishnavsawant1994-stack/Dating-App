@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "together",
+    "slug": "together",
+    "version": "0.0.0",
+    "scheme": "together",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "bundleIdentifier": "com.together.mobile",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.together.mobile"
+    },
+    "plugins": ["expo-secure-store"],
+    "extra": {
+      "engineeringStage": "stage0"
+    }
+  }
+}
