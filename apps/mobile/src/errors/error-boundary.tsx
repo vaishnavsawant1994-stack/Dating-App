@@ -12,7 +12,7 @@ interface ErrorBoundaryState {
 }
 
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  state: ErrorBoundaryState = { failed: false };
+  override state: ErrorBoundaryState = { failed: false };
 
   static getDerivedStateFromError(): ErrorBoundaryState {
     return { failed: true };

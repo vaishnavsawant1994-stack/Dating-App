@@ -84,9 +84,8 @@ export function createMobileApiClient(options: MobileApiClientOptions) {
         const timeout = setTimeout(() => controller.abort('timeout'), timeoutMs);
 
         try {
-          const response = await fetchImpl(`${options.baseUrl}${path}`, {
+          const init: RequestInit = {
             method,
-            body: requestOptions.body,
             signal: controller.signal,
             headers: {
               accept: 'application/json',
@@ -95,7 +94,9 @@ export function createMobileApiClient(options: MobileApiClientOptions) {
               'x-platform': options.platform,
               ...requestOptions.headers,
             },
-          });
+            ...(requestOptions.body === undefined ? {} : { body: requestOptions.body }),
+          };
+          const response = await fetchImpl(`${options.baseUrl}${path}`, init);
 
           if (response.ok) {
             return response;

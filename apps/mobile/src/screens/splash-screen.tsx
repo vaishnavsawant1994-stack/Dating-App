@@ -38,6 +38,6 @@ const styles = StyleSheet.create({
   },
   markText: { color: mobileColors.primary, fontSize: 30 },
   brand: { color: mobileColors.primary, fontSize: 38, lineHeight: 44, fontWeight: '900', letterSpacing: -1.2 },
-  tagline: { color: mobileColors.text, fontSize: 22, lineHeight: 29, fontWeight: '750' },
+  tagline: { color: mobileColors.text, fontSize: 22, lineHeight: 29, fontWeight: '700' },
   detail: { color: mobileColors.muted, fontSize: 16, lineHeight: 24, marginBottom: 12 },
 });
