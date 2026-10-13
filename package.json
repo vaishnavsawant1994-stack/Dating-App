@@ -10,6 +10,7 @@
   },
   "scripts": {
     "dev": "turbo run dev --parallel",
+    "dev:api": "pnpm --filter @together/api dev",
     "build": "turbo run build",
     "generate": "turbo run generate",
     "lint": "turbo run lint",
