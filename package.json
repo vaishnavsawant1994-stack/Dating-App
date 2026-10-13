@@ -11,6 +11,7 @@
   "scripts": {
     "dev": "turbo run dev --parallel",
     "dev:api": "pnpm --filter @together/api dev",
+    "dev:realtime": "pnpm --filter @together/realtime dev",
     "dev:web": "pnpm --filter @together/web dev",
     "dev:admin": "pnpm --filter @together/admin dev",
     "dev:mobile": "pnpm --filter @together/mobile start",
