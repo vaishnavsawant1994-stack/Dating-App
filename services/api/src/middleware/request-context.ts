@@ -2,6 +2,7 @@ import {
   createTraceId,
   runWithRequestContext,
   traceIdFromTraceParent,
+  type RequestContext,
 } from '@together/observability';
 import { UuidSchema } from '@together/validation';
 import { type FastifyInstance } from 'fastify';
@@ -17,18 +18,15 @@ export function validOrGeneratedRequestId(value: string | undefined, generate: (
 export function registerRequestContext(app: FastifyInstance): void {
   app.addHook('onRequest', (request, reply, done) => {
     const traceId = traceIdFromTraceParent(singleHeader(request.headers.traceparent)) ?? createTraceId();
-    const context = {
+    const clientVersion = singleHeader(request.headers['x-client-version']);
+    const client = singleHeader(request.headers['x-platform']);
+    const identityId = singleHeader(request.headers['x-identity-id']);
+    const context: RequestContext = {
       requestId: request.id,
       traceId,
-      ...(singleHeader(request.headers['x-client-version']) === undefined
-        ? {}
-        : { clientVersion: singleHeader(request.headers['x-client-version']) }),
-      ...(singleHeader(request.headers['x-platform']) === undefined
-        ? {}
-        : { client: singleHeader(request.headers['x-platform']) }),
-      ...(singleHeader(request.headers['x-identity-id']) === undefined
-        ? {}
-        : { identityId: singleHeader(request.headers['x-identity-id']) }),
+      ...(clientVersion === undefined ? {} : { clientVersion }),
+      ...(client === undefined ? {} : { client }),
+      ...(identityId === undefined ? {} : { identityId }),
     };
 
     reply.header('x-request-id', request.id);
