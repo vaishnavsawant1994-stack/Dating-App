@@ -16,9 +16,14 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "test:unit": "turbo run test:unit",
+    "test:integration": "turbo run test:integration",
     "test:contracts": "turbo run test:contracts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "db:migrate": "pnpm --filter @together/database db:migrate",
+    "db:rollback": "pnpm --filter @together/database db:rollback",
+    "db:status": "pnpm --filter @together/database db:status",
+    "db:validate": "pnpm --filter @together/database db:validate",
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test:unit"
   },
   "devDependencies": {
