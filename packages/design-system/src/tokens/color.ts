@@ -12,7 +12,7 @@ export const color = {
   muted: '#74666d',
   border: '#e8cbd3',
   white: '#ffffff',
-  success: '#277a58',
+  success: '#246c4f',
   warning: '#9a6114',
   danger: '#a63c50',
   darkCanvas: '#171216',

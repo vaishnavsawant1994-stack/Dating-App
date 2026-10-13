@@ -8,13 +8,13 @@
   --text: #241a1e;
   --text-muted: #74666d;
   --border: #e8cbd3;
-  --primary: #d95f7c;
+  --primary: #a93a58;
   --primary-strong: #a93a58;
   --primary-contrast: #ffffff;
-  --success: #277a58;
+  --success: #246c4f;
   --warning: #9a6114;
   --danger: #a63c50;
-  --focus: rgba(217, 95, 124, 0.28);
+  --focus: rgba(169, 58, 88, 0.28);
   --shadow-soft: 0 12px 36px rgba(73, 41, 53, 0.08);
 }
 

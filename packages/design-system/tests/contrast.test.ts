@@ -11,7 +11,13 @@ describe('@together/design-system contrast', () => {
     expect(meetsWcagAaText(color.darkText, color.darkCanvas)).toBe(true);
   });
 
-  it('keeps primary rose CTA text readable', () => {
+  it('keeps primary interactive rose surfaces readable with white text', () => {
     expect(meetsWcagAaText(color.white, color.rose700)).toBe(true);
+    expect(contrastRatio(color.white, color.rose700)).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it('keeps verification green readable on selected pale-rose surfaces', () => {
+    expect(meetsWcagAaText(color.success, color.rose100)).toBe(true);
+    expect(contrastRatio(color.success, color.rose100)).toBeGreaterThanOrEqual(4.5);
   });
 });

@@ -7,8 +7,9 @@ export const lightTheme = {
   text: color.ink,
   textMuted: color.muted,
   border: color.border,
-  primary: color.rose500,
+  primary: color.rose700,
   primaryStrong: color.rose700,
+  success: color.success,
 } as const;
 
 export const darkTheme = {
@@ -20,4 +21,5 @@ export const darkTheme = {
   border: color.darkBorder,
   primary: color.rose300,
   primaryStrong: '#ffd6e1',
+  success: '#75cda9',
 } as const;
