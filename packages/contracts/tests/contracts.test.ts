@@ -7,7 +7,7 @@ describe('@together/contracts', () => {
   it('validates the canonical OpenAPI document', async () => {
     const schemaPath = fileURLToPath(new URL('../openapi/base.yaml', import.meta.url));
     const api = await SwaggerParser.validate(schemaPath);
-    expect(api.openapi).toBe('3.1.0');
+    expect(api).toHaveProperty('openapi', '3.1.0');
   });
 
   it('parses the public health contract', () => {
