@@ -1,0 +1,23 @@
+import { color } from './tokens/color.js';
+
+export const lightTheme = {
+  canvas: color.cream,
+  surface: color.white,
+  surfaceSelected: color.rose100,
+  text: color.ink,
+  textMuted: color.muted,
+  border: color.border,
+  primary: color.rose500,
+  primaryStrong: color.rose700,
+} as const;
+
+export const darkTheme = {
+  canvas: color.darkCanvas,
+  surface: color.darkSurface,
+  surfaceSelected: '#3a2430',
+  text: color.darkText,
+  textMuted: color.darkMuted,
+  border: color.darkBorder,
+  primary: color.rose300,
+  primaryStrong: '#ffd6e1',
+} as const;

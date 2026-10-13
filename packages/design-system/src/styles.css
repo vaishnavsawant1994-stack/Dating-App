@@ -1,0 +1,137 @@
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+  --canvas: #fff8f4;
+  --canvas-accent: #f4efff;
+  --surface: #ffffff;
+  --surface-selected: #fde8ee;
+  --text: #241a1e;
+  --text-muted: #74666d;
+  --border: #e8cbd3;
+  --primary: #d95f7c;
+  --primary-strong: #a93a58;
+  --primary-contrast: #ffffff;
+  --success: #277a58;
+  --warning: #9a6114;
+  --danger: #a63c50;
+  --focus: rgba(217, 95, 124, 0.28);
+  --shadow-soft: 0 12px 36px rgba(73, 41, 53, 0.08);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --canvas: #171216;
+  --canvas-accent: #211b2b;
+  --surface: #221a20;
+  --surface-selected: #3a2430;
+  --text: #fff8fb;
+  --text-muted: #cdbbc3;
+  --border: #5f4350;
+  --primary: #efabc0;
+  --primary-strong: #ffd6e1;
+  --primary-contrast: #241a1e;
+  --success: #75cda9;
+  --warning: #e7b56f;
+  --danger: #f09aae;
+  --focus: rgba(239, 171, 192, 0.32);
+  --shadow-soft: 0 12px 36px rgba(0, 0, 0, 0.28);
+}
+
+.tg-button,
+.tg-input,
+.tg-card,
+.tg-badge,
+.tg-chip,
+.tg-avatar {
+  box-sizing: border-box;
+}
+
+.tg-button {
+  min-height: 44px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 0.7rem 1.1rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 120ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.tg-button:hover:not(:disabled) { transform: translateY(-1px); }
+.tg-button:disabled { opacity: 0.5; cursor: not-allowed; }
+.tg-button:focus-visible,
+.tg-input:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+}
+.tg-button--primary { background: var(--primary); color: var(--primary-contrast); }
+.tg-button--secondary { background: var(--surface-selected); color: var(--text); border-color: var(--border); }
+.tg-button--quiet { background: transparent; color: var(--text); border-color: var(--border); }
+.tg-button--danger { background: var(--danger); color: #fff; }
+.tg-button--sm { min-height: 38px; padding: 0.5rem 0.85rem; font-size: 0.875rem; }
+.tg-button--lg { min-height: 50px; padding: 0.85rem 1.35rem; }
+
+.tg-input {
+  min-height: 44px;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--surface);
+  color: var(--text);
+  padding: 0.75rem 0.9rem;
+  font: inherit;
+}
+.tg-input[aria-invalid='true'] { border-color: var(--danger); }
+
+.tg-card {
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-soft);
+  padding: 1.25rem;
+}
+.tg-card--selected { background: var(--surface-selected); border-color: var(--primary); }
+
+.tg-badge,
+.tg-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  padding: 0.3rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.tg-badge--rose,
+.tg-chip--identity { background: var(--surface-selected); color: var(--primary-strong); }
+.tg-badge--success,
+.tg-chip--verification { color: var(--success); }
+.tg-badge--warning { color: var(--warning); }
+.tg-chip--privacy { color: var(--text); border-style: dashed; }
+.tg-chip--visibility { color: var(--primary-strong); }
+
+.tg-avatar {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--surface-selected);
+  color: var(--primary-strong);
+  border: 1px solid var(--border);
+  font-weight: 800;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
