@@ -413,6 +413,19 @@ importers:
         specifier: 4.23.15
         version: 4.23.15
 
+  services/finance:
+    dependencies:
+      fastify:
+        specifier: 5.12.5
+        version: 5.12.5
+      zod:
+        specifier: 4.6.5
+        version: 4.6.5
+    devDependencies:
+      tsx:
+        specifier: 4.23.15
+        version: 4.23.15
+
   services/media:
     dependencies:
       '@aws-sdk/client-s3':
@@ -450,6 +463,19 @@ importers:
       '@types/ws':
         specifier: 8.18.1
         version: 8.18.1
+      tsx:
+        specifier: 4.23.15
+        version: 4.23.15
+
+  services/safety:
+    dependencies:
+      fastify:
+        specifier: 5.12.5
+        version: 5.12.5
+      zod:
+        specifier: 4.6.5
+        version: 4.6.5
+    devDependencies:
       tsx:
         specifier: 4.23.15
         version: 4.23.15
