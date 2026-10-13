@@ -13,6 +13,7 @@
     "dev:api": "pnpm --filter @together/api dev",
     "dev:web": "pnpm --filter @together/web dev",
     "dev:admin": "pnpm --filter @together/admin dev",
+    "dev:mobile": "pnpm --filter @together/mobile start",
     "build": "turbo run build",
     "generate": "turbo run generate",
     "lint": "turbo run lint",
