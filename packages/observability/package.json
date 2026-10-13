@@ -1,0 +1,19 @@
+{
+  "name": "@together/observability",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src tests",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:unit": "vitest run"
+  },
+  "dependencies": {
+    "@opentelemetry/api": "1.9.1",
+    "pino": "10.4.0"
+  }
+}
