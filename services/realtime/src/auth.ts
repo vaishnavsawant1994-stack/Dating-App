@@ -1,4 +1,4 @@
-import { type RealtimeAuthContext, type RealtimePrincipal, type RealtimeTokenVerifier } from './types.js';
+import { type RealtimePrincipal, type RealtimeTokenVerifier } from './types.js';
 
 export const REALTIME_PROTOCOL = 'together.realtime.v1';
 export const AUTH_PROTOCOL_PREFIX = 'together.auth.';
