@@ -47,5 +47,5 @@ export interface ConnectionRecord {
   readonly socket: WebSocket;
   initialized: boolean;
   alive: boolean;
-  helloTimer?: NodeJS.Timeout;
+  helloTimer: NodeJS.Timeout | undefined;
 }

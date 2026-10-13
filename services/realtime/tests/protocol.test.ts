@@ -17,9 +17,10 @@ describe('realtime authentication protocols', () => {
     expect(parseRealtimeProtocols(`${REALTIME_PROTOCOL}, ${AUTH_PROTOCOL_PREFIX}%%%`)).toBeNull();
   });
 
-  it('detects credential-bearing realtime URLs', () => {
+  it('detects credential-bearing realtime URLs case-insensitively', () => {
     expect(containsForbiddenCredentialQuery('/v1/realtime?token=secret')).toBe(true);
     expect(containsForbiddenCredentialQuery('/v1/realtime?access_token=secret')).toBe(true);
+    expect(containsForbiddenCredentialQuery('/v1/realtime?Authorization=secret')).toBe(true);
     expect(containsForbiddenCredentialQuery('/v1/realtime?room=abc')).toBe(false);
   });
 });

@@ -1,3 +1,4 @@
+import { WebSocket } from 'ws';
 import { type ConnectionRecord } from './types.js';
 
 export class ConnectionRegistry {
@@ -21,7 +22,7 @@ export class ConnectionRegistry {
 
   heartbeat(): void {
     for (const record of this.connections.values()) {
-      if (record.socket.readyState !== record.socket.OPEN) {
+      if (record.socket.readyState !== WebSocket.OPEN) {
         continue;
       }
       if (!record.alive) {
@@ -38,7 +39,7 @@ export class ConnectionRegistry {
       if (record.helloTimer !== undefined) {
         clearTimeout(record.helloTimer);
       }
-      if (record.socket.readyState === record.socket.OPEN) {
+      if (record.socket.readyState === WebSocket.OPEN) {
         record.socket.close(code, reason);
       } else {
         record.socket.terminate();

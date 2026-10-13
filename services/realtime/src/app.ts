@@ -1,11 +1,12 @@
 import websocket from '@fastify/websocket';
 import Fastify, { type FastifyInstance, type FastifyReply, type FastifyRequest } from 'fastify';
 import { randomUUID } from 'node:crypto';
+import { WebSocket } from 'ws';
 import { AUTH_PROTOCOL_PREFIX, REALTIME_PROTOCOL, containsForbiddenCredentialQuery, parseRealtimeProtocols } from './auth.js';
 import { parseClientEnvelope, PROTOCOL_VERSION, type ErrorEnvelope, type ServerEnvelope } from './protocol.js';
 import { FixedWindowRateLimiter } from './rate-limiter.js';
 import { ConnectionRegistry } from './registry.js';
-import { type RealtimeConfig, type RealtimeDependencies, type RealtimePrincipal } from './types.js';
+import { type ConnectionRecord, type RealtimeConfig, type RealtimeDependencies, type RealtimePrincipal } from './types.js';
 
 const AUTH_FAILURE = { error: { code: 'REALTIME_UNAUTHORIZED', message: 'Realtime authentication failed.' } } as const;
 const ORIGIN_FAILURE = { error: { code: 'REALTIME_ORIGIN_DENIED', message: 'Realtime origin is not allowed.' } } as const;
@@ -125,18 +126,19 @@ export async function buildRealtimeApp(
       }
 
       const connectionId = createConnectionId();
-      const record = {
+      const record: ConnectionRecord = {
         connectionId,
         principal: authenticated.principal,
         socket,
         initialized: false,
         alive: true,
+        helloTimer: undefined,
       };
       registry.add(record);
 
       const limiter = new FixedWindowRateLimiter(config.maxMessagesPerWindow, config.rateWindowMs, Date.now());
       record.helloTimer = setTimeout(() => {
-        if (!record.initialized && socket.readyState === socket.OPEN) {
+        if (!record.initialized && socket.readyState === WebSocket.OPEN) {
           socket.close(1008, 'client hello required');
         }
       }, config.helloTimeoutMs);

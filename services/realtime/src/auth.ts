@@ -3,13 +3,14 @@ import { type RealtimeAuthContext, type RealtimePrincipal, type RealtimeTokenVer
 export const REALTIME_PROTOCOL = 'together.realtime.v1';
 export const AUTH_PROTOCOL_PREFIX = 'together.auth.';
 const MAX_TOKEN_BYTES = 4_096;
+const FORBIDDEN_CREDENTIAL_QUERY_KEYS = new Set(['access_token', 'token', 'auth', 'authorization']);
 
 export class DenyAllTokenVerifier implements RealtimeTokenVerifier {
   isReady(): boolean {
     return false;
   }
 
-  async verify(_token: string, _context: RealtimeAuthContext): Promise<RealtimePrincipal | null> {
+  async verify(): Promise<RealtimePrincipal | null> {
     return null;
   }
 }
@@ -64,8 +65,8 @@ export function parseRealtimeProtocols(header: string | undefined): ParsedRealti
 
 export function containsForbiddenCredentialQuery(url: string): boolean {
   const parsed = new URL(url, 'http://realtime.invalid');
-  for (const key of ['access_token', 'token', 'auth', 'authorization']) {
-    if (parsed.searchParams.has(key)) {
+  for (const key of parsed.searchParams.keys()) {
+    if (FORBIDDEN_CREDENTIAL_QUERY_KEYS.has(key.toLowerCase())) {
       return true;
     }
   }
