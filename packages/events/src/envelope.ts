@@ -17,3 +17,7 @@ export function createEventEnvelopeSchema<TPayload extends z.ZodType>(payload: T
 }
 
 export type EventEnvelopeBase = z.infer<typeof EventEnvelopeBaseSchema>;
+export type DomainEventEnvelope<TPayload extends Record<string, unknown> = Record<string, unknown>> =
+  EventEnvelopeBase & {
+    readonly payload: TPayload;
+  };

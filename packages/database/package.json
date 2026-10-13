@@ -1,0 +1,30 @@
+{
+  "name": "@together/database",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src tests",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run tests/unit.test.ts",
+    "test:unit": "vitest run tests/unit.test.ts",
+    "test:integration": "vitest run tests/integration.test.ts",
+    "db:migrate": "tsx src/migration-cli.ts up",
+    "db:rollback": "tsx src/migration-cli.ts down",
+    "db:status": "tsx src/migration-cli.ts status",
+    "db:validate": "tsx src/migration-cli.ts validate"
+  },
+  "dependencies": {
+    "@together/config": "workspace:*",
+    "@together/events": "workspace:*",
+    "pg": "8.23.1",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@types/pg": "8.23.1",
+    "tsx": "4.23.15"
+  }
+}

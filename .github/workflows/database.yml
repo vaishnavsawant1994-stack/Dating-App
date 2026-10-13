@@ -1,0 +1,78 @@
+name: Database
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  postgres:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        image: postgres:18.6
+        env:
+          POSTGRES_USER: together
+          POSTGRES_PASSWORD: together
+          POSTGRES_DB: together_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U together -d together_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      APP_ENV: test
+      DATABASE_URL: postgres://together:together@127.0.0.1:5432/together_test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Activate pinned pnpm
+        run: corepack prepare pnpm@12.11.2 --activate
+
+      - name: Install dependencies on PR
+        if: github.event_name == 'pull_request'
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Install committed dependencies
+        if: github.event_name != 'pull_request'
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck database package
+        run: pnpm --filter @together/database typecheck
+
+      - name: Validate clean migration
+        run: pnpm db:migrate
+
+      - name: Validate migration checksums
+        run: pnpm db:validate
+
+      - name: Run PostgreSQL integration tests
+        run: pnpm --filter @together/database test:integration
+
+      - name: Roll back bootstrap migration
+        run: pnpm db:rollback
+
+      - name: Re-apply bootstrap migration
+        run: pnpm db:migrate
+
+      - name: Revalidate migration state
+        run: pnpm db:validate
