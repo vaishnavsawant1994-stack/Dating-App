@@ -18,10 +18,10 @@ The repository is organized around `apps/`, `services/`, `workers/`, `packages/`
 
 1. Install the Node version from `.nvmrc`.
 2. Enable Corepack and install the pinned pnpm version.
-3. Run `pnpm install --frozen-lockfile` after the lockfile is introduced.
+3. Run `pnpm install --frozen-lockfile` using the committed `pnpm-lock.yaml`.
 4. Run `pnpm check` before opening a pull request.
 
-Local infrastructure and application commands will be added in the subsequent Stage 0 pull requests as those components become executable.
+The committed lockfile is the deterministic dependency authority for local development and CI. Local infrastructure and application commands will be added in subsequent Stage 0 pull requests as those components become executable.
 
 ## Safety and privacy
 
