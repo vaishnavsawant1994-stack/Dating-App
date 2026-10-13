@@ -17,12 +17,12 @@ export function AdminShell({ children, environment, preview = false }: AdminShel
     <div className="admin-shell">
       <a className="admin-skip-link" href="#admin-main">Skip to admin content</a>
       <EnvironmentBanner environment={environment} mode={preview ? 'preview' : 'authenticated'} />
-      <aside className="admin-sidebar" aria-label="Admin navigation">
+      <aside className="admin-sidebar">
         <Link className="admin-brand" href={preview ? '/preview' : '/overview'} aria-label="together admin home">
           <TogetherLogo aria-hidden="true" />
           <span><strong>together</strong><small>Admin</small></span>
         </Link>
-        <nav>
+        <nav aria-label="Admin navigation">
           {navigation.map((item) => (
             <Link key={item.href} href={preview ? `/preview#${item.href.slice(1)}` : item.href}>
               {item.label}
