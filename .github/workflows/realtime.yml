@@ -1,0 +1,64 @@
+name: Realtime
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  realtime-service:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      APP_ENV: test
+      SERVICE_NAME: realtime
+      LOG_LEVEL: error
+      REALTIME_HOST: 127.0.0.1
+      REALTIME_PORT: 0
+      REALTIME_ALLOWED_ORIGINS: http://localhost:3000
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Activate pinned pnpm
+        run: corepack prepare pnpm@12.11.2 --activate
+
+      - name: Resolve PR dependencies under active policies
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          pnpm clean --lockfile
+          pnpm install --no-frozen-lockfile
+
+      - name: Install committed dependencies
+        if: github.event_name != 'pull_request'
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify realtime dependency alignment
+        run: pnpm --filter @together/realtime exec pnpm list --depth 0
+
+      - name: Lint realtime
+        run: pnpm --filter @together/realtime lint
+
+      - name: Typecheck realtime
+        run: pnpm --filter @together/realtime typecheck
+
+      - name: Run realtime unit tests
+        run: pnpm --filter @together/realtime test:unit
+
+      - name: Run realtime integration tests
+        run: pnpm --filter @together/realtime test:integration
