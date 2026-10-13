@@ -1,4 +1,4 @@
-import { Component, type ErrorInfo, type ReactNode } from 'react';
+import { Component, type ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { MobileButton } from '../components/mobile-button';
 import { mobileColors } from '../theme/theme';
@@ -16,11 +16,6 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   static getDerivedStateFromError(): ErrorBoundaryState {
     return { failed: true };
-  }
-
-  override componentDidCatch(_error: Error, _info: ErrorInfo): void {
-    // Stage 0 intentionally does not log raw exception payloads from the UI.
-    // A redacted error-reporting adapter will be wired through observability later.
   }
 
   private readonly reset = () => {
