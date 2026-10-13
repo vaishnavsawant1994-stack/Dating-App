@@ -1,4 +1,4 @@
-import { color } from './tokens/color.js';
+import { color } from './tokens/color';
 
 export const lightTheme = {
   canvas: color.cream,
