@@ -1,0 +1,38 @@
+name: Finance
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  finance-service:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      APP_ENV: test
+      SERVICE_NAME: finance
+      LOG_LEVEL: error
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - run: corepack enable
+      - run: corepack prepare pnpm@12.11.2 --activate
+      - name: Resolve PR dependencies under active policies
+        if: github.event_name == 'pull_request'
+        run: |
+          pnpm clean --lockfile
+          pnpm install --no-frozen-lockfile
+      - name: Install committed dependencies
+        if: github.event_name != 'pull_request'
+        run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @together/finance lint
+      - run: pnpm --filter @together/finance typecheck
+      - run: pnpm --filter @together/finance test:unit
+      - run: pnpm --filter @together/finance test:integration

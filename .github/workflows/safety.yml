@@ -1,0 +1,38 @@
+name: Safety
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  safety-service:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      APP_ENV: test
+      SERVICE_NAME: safety
+      LOG_LEVEL: error
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - run: corepack enable
+      - run: corepack prepare pnpm@12.11.2 --activate
+      - name: Resolve PR dependencies under active policies
+        if: github.event_name == 'pull_request'
+        run: |
+          pnpm clean --lockfile
+          pnpm install --no-frozen-lockfile
+      - name: Install committed dependencies
+        if: github.event_name != 'pull_request'
+        run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @together/safety lint
+      - run: pnpm --filter @together/safety typecheck
+      - run: pnpm --filter @together/safety test:unit
+      - run: pnpm --filter @together/safety test:integration
