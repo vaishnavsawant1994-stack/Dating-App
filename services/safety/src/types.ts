@@ -39,7 +39,7 @@ export interface SafetyReportRecord {
   readonly createdAt: string;
 }
 
-export interface CreateSafetyReportInput extends Omit<SafetyReportRecord, 'status'> {}
+export type CreateSafetyReportInput = Omit<SafetyReportRecord, 'status'>;
 
 export interface SafetyReportStore {
   readonly name: string;
