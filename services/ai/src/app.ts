@@ -1,6 +1,6 @@
 import Fastify, { type FastifyInstance } from 'fastify';
 import { randomUUID } from 'node:crypto';
-import { aiRequestSchema, requestInputCharacters } from './contracts.js';
+import { AI_CONTRACT_VERSION, aiRequestSchema, requestInputCharacters } from './contracts.js';
 import { type AiProvider } from './provider.js';
 import { type AiAccessAuthorizer, type AiConfig } from './types.js';
 
@@ -77,6 +77,7 @@ export async function buildAiApp(config: AiConfig, dependencies: AiAppDependenci
 
     const output = await dependencies.provider.execute(parsed.data);
     return reply.send({
+      v: AI_CONTRACT_VERSION,
       request_id: requestId,
       operation: parsed.data.operation,
       provider: dependencies.provider.name,

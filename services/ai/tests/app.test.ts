@@ -33,16 +33,23 @@ describe('AI application', () => {
     await app.close();
   });
 
-  it('executes only validated and authorized requests', async () => {
+  it('executes only versioned, validated, and authorized requests', async () => {
     const app = await buildAiApp(config, { provider: new FakeAiProvider(), authorizer: allow, createRequestId: () => 'request-0001' });
     await app.ready();
     const response = await app.inject({
       method: 'POST',
       url: '/v1/ai/execute',
-      payload: { operation: 'classify', purpose: 'test classification', payload: { input: 'hello', labels: ['a', 'b'] } },
+      payload: { v: 1, operation: 'classify', purpose: 'test classification', payload: { input: 'hello', labels: ['a', 'b'] } },
     });
     expect(response.statusCode).toBe(200);
-    expect(response.json()).toMatchObject({ request_id: 'request-0001', provider: 'fake', synthetic: true, operation: 'classify' });
+    expect(response.json()).toMatchObject({ v: 1, request_id: 'request-0001', provider: 'fake', synthetic: true, operation: 'classify' });
+
+    const unversioned = await app.inject({
+      method: 'POST',
+      url: '/v1/ai/execute',
+      payload: { operation: 'classify', purpose: 'test classification', payload: { input: 'hello', labels: ['a', 'b'] } },
+    });
+    expect(unversioned.statusCode).toBe(400);
     await app.close();
   });
 
@@ -54,7 +61,7 @@ describe('AI application', () => {
     await denied.ready();
     const denial = await denied.inject({
       method: 'POST', url: '/v1/ai/execute',
-      payload: { operation: 'generate', purpose: 'test generation', payload: { prompt: 'hello' } },
+      payload: { v: 1, operation: 'generate', purpose: 'test generation', payload: { prompt: 'hello' } },
     });
     expect(denial.statusCode).toBe(403);
     await denied.close();
@@ -63,12 +70,12 @@ describe('AI application', () => {
     await bounded.ready();
     const tooLarge = await bounded.inject({
       method: 'POST', url: '/v1/ai/execute',
-      payload: { operation: 'generate', purpose: 'test generation', payload: { prompt: 'x'.repeat(1_001) } },
+      payload: { v: 1, operation: 'generate', purpose: 'test generation', payload: { prompt: 'x'.repeat(1_001) } },
     });
     expect(tooLarge.statusCode).toBe(413);
     const tooManyTokens = await bounded.inject({
       method: 'POST', url: '/v1/ai/execute',
-      payload: { operation: 'generate', purpose: 'test generation', payload: { prompt: 'hello', max_output_tokens: 101 } },
+      payload: { v: 1, operation: 'generate', purpose: 'test generation', payload: { prompt: 'hello', max_output_tokens: 101 } },
     });
     expect(tooManyTokens.statusCode).toBe(400);
     await bounded.close();

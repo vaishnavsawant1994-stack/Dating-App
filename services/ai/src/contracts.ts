@@ -1,6 +1,9 @@
 import { z } from 'zod';
 
+export const AI_CONTRACT_VERSION = 1 as const;
+
 const common = z.object({
+  v: z.literal(AI_CONTRACT_VERSION),
   purpose: z.string().min(3).max(128),
 });
 
