@@ -6,3 +6,8 @@ packages:
   - "tooling/*"
 
 sharedWorkspaceLockfile: true
+
+# pnpm 12 denies dependency lifecycle scripts by default. esbuild is the only
+# reviewed Stage 0 dependency that requires a build/install script (via tsx).
+allowBuilds:
+  esbuild: true
