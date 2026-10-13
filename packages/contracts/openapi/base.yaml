@@ -1,0 +1,117 @@
+openapi: 3.1.0
+info:
+  title: together API
+  version: 1.0.0
+  description: Canonical Stage 0 HTTP contract for the together platform foundation.
+servers:
+  - url: /
+paths:
+  /health/live:
+    get:
+      operationId: getLiveness
+      summary: Process liveness
+      responses:
+        '200':
+          description: Service process is alive.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+  /health/ready:
+    get:
+      operationId: getReadiness
+      summary: Service readiness
+      responses:
+        '200':
+          description: Required dependencies are ready.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: A required dependency is unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+  /v1/system/info:
+    get:
+      operationId: getSystemInfo
+      summary: Minimal public service information
+      responses:
+        '200':
+          description: Minimal versioned service information.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemInfo'
+components:
+  schemas:
+    RuntimeEnvironment:
+      type: string
+      enum: [local, test, preview, staging, sandbox, production]
+    HealthResponse:
+      type: object
+      additionalProperties: false
+      required: [status, service, version, environment]
+      properties:
+        status:
+          type: string
+          enum: [ok, degraded]
+        service:
+          type: string
+          minLength: 1
+        version:
+          type: string
+          minLength: 1
+        environment:
+          $ref: '#/components/schemas/RuntimeEnvironment'
+    SystemInfo:
+      type: object
+      additionalProperties: false
+      required: [service, api_version, environment]
+      properties:
+        service:
+          type: string
+          minLength: 1
+        api_version:
+          type: string
+          const: v1
+        environment:
+          $ref: '#/components/schemas/RuntimeEnvironment'
+    ErrorCode:
+      type: string
+      enum:
+        - AUTH_REQUIRED
+        - AUTH_INVALID
+        - VALIDATION_FAILED
+        - NOT_FOUND
+        - CONFLICT
+        - RATE_LIMITED
+        - TEMPORARILY_UNAVAILABLE
+        - INTERNAL_ERROR
+    Error:
+      type: object
+      additionalProperties: false
+      required: [code, message, request_id, retryable]
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          type: string
+          minLength: 1
+        request_id:
+          type: string
+          format: uuid
+        retryable:
+          type: boolean
+        details:
+          type: object
+          additionalProperties: true
+    ErrorEnvelope:
+      type: object
+      additionalProperties: false
+      required: [error]
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'

@@ -1,0 +1,19 @@
+{
+  "name": "@together/events",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src tests",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:unit": "vitest run",
+    "test:contracts": "vitest run"
+  },
+  "dependencies": {
+    "zod": "4.6.5"
+  }
+}
