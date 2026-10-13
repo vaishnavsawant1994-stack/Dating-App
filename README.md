@@ -1,5 +1,28 @@
 # together
 
-Engineering repository for the **together** dating, social, communities, live, creator economy, trust & safety platform.
+Engineering monorepo for the **together** dating, social, communities, live, creator economy, trust & safety platform.
 
-The authoritative engineering program is implemented stage-by-stage. `main` is reserved for qualified integration work; Stage 0 establishes the monorepo, contracts, infrastructure, CI, security, privacy, and qualification foundation before product features begin.
+## Engineering status
+
+The planning chain is frozen through **Stage 0 Implementation Specification v1.0**. Engineering is proceeding stage-by-stage. `main` is the qualified integration branch; feature work lands through reviewed pull requests and later stage qualification evidence.
+
+## Stage 0 goals
+
+Stage 0 establishes the monorepo, shared contracts, service boundaries, database migrations, event infrastructure, local/staging/sandbox environments, CI/CD, security/privacy gates, observability, and exact-SHA qualification before product features begin.
+
+## Workspace
+
+The repository is organized around `apps/`, `services/`, `workers/`, `packages/`, `database/`, `infra/`, `sandbox/`, `tests/`, and `docs/`.
+
+## Local bootstrap
+
+1. Install the Node version from `.nvmrc`.
+2. Enable Corepack and install the pinned pnpm version.
+3. Run `pnpm install --frozen-lockfile` using the committed `pnpm-lock.yaml`.
+4. Run `pnpm check` before opening a pull request.
+
+The committed lockfile is the deterministic dependency authority for local development and CI. Local infrastructure and application commands will be added in subsequent Stage 0 pull requests as those components become executable.
+
+## Safety and privacy
+
+This product treats privacy, identity isolation, blocks, verification, safety operations, and financial integrity as architectural foundations rather than later enhancements. See `SECURITY.md` and `ARCHITECTURE.md` for repository-level rules.

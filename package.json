@@ -1,0 +1,29 @@
+{
+  "name": "together-platform",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Engineering monorepo for the together dating, social, communities, live, creator economy, trust and safety platform.",
+  "packageManager": "pnpm@12.11.2",
+  "engines": {
+    "node": ">=24.21.0 <27",
+    "pnpm": ">=12.11.2 <13"
+  },
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:unit": "turbo run test:unit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test:unit"
+  },
+  "devDependencies": {
+    "eslint": "10.10.0",
+    "prettier": "3.9.10",
+    "turbo": "2.10.13",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.1"
+  }
+}
