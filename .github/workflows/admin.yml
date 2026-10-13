@@ -1,0 +1,64 @@
+name: Admin
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  admin-shell:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      APP_ENV: test
+      ADMIN_SHELL_PREVIEW: 'true'
+      NEXT_PUBLIC_ADMIN_API_BASE_URL: http://127.0.0.1:3998
+      NEXT_PUBLIC_API_BASE_URL: http://127.0.0.1:3999
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Activate pinned pnpm
+        run: corepack prepare pnpm@12.11.2 --activate
+
+      - name: Resolve PR dependencies under active policies
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          pnpm clean --lockfile
+          pnpm install --no-frozen-lockfile
+
+      - name: Install committed dependencies
+        if: github.event_name != 'pull_request'
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint Admin
+        run: pnpm --filter @together/admin lint
+
+      - name: Typecheck Admin
+        run: pnpm --filter @together/admin typecheck
+
+      - name: Admin boundary tests
+        run: pnpm --filter @together/admin test:unit
+
+      - name: Build Admin
+        run: pnpm --filter @together/admin build
+
+      - name: Install Chromium
+        run: pnpm --filter @together/admin exec playwright install --with-deps chromium
+
+      - name: Responsive and accessibility checks
+        run: pnpm --filter @together/admin test:e2e
