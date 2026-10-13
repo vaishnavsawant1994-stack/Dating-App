@@ -1,8 +1,9 @@
 import { type ImgHTMLAttributes } from 'react';
 
-export interface AvatarProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'alt'> {
+export interface AvatarProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'alt' | 'src'> {
   readonly alt: string;
   readonly fallback: string;
+  readonly src?: string;
 }
 
 export function Avatar({ alt, fallback, src, className = '', ...props }: AvatarProps) {
