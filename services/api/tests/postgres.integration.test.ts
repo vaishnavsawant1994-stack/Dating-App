@@ -1,9 +1,8 @@
 import { checkDatabaseHealth, createDatabasePool, migrateUp } from '@together/database';
-import { type Pool } from 'pg';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { buildApiApp } from '../src/app.js';
 
-let pool: Pool;
+let pool: ReturnType<typeof createDatabasePool>;
 
 beforeAll(async () => {
   const connectionString = process.env.DATABASE_URL;
