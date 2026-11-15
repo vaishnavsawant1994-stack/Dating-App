@@ -26,3 +26,7 @@ The committed lockfile is the deterministic dependency authority for local devel
 ## Safety and privacy
 
 This product treats privacy, identity isolation, blocks, verification, safety operations, and financial integrity as architectural foundations rather than later enhancements. See `SECURITY.md` and `ARCHITECTURE.md` for repository-level rules.
+
+## Complete project guide
+
+For an individual explanation of this repository's purpose, users, workflows, architecture, current implementation limits, developer setup, security boundaries and prioritized engineering work, see the [**Project Handbook**](docs/PROJECT_HANDBOOK.md). This documentation reflects inspected repository source and is not a live-release certification.
